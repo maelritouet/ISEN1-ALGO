@@ -162,20 +162,87 @@ make clean  # Nettoie les fichiers objets
 
 ## 📅 Planning
 
-| Date | Étape |
-|---|---|
-| 08/06 | Lancement — définition structs & archi |
-| 10/06 | Point d'avancement |
-| 12/06 | Point d'avancement |
-| 15/06 | Point d'avancement |
-| 17/06 | Point d'avancement |
-| **18/06 23h00** | **Rendu final** |
-| 19/06 | Soutenances |
+Plan de développement — A à Z
+🟦 Phase 0 — Fondations (Jour 1 — 08/06)
+Objectif : quelque chose s'affiche à l'écran, le projet compile.
 
----
+Makefile — compilation de tous les .c en une commande
+jeu.h — toutes les structs + constantes
+main.c — fenêtre Gfxlib qui s'ouvre, boucle vide, fond noir
+rendu.c — fonction dessinerRectangle() placeholder pour le joueur
 
-## 📬 Rendu
+✅ Critère de validation : une fenêtre noire s'ouvre avec un rectangle blanc qui représente le joueur.
 
-Archive à envoyer à :
-- lucas.giraud@yncrea.fr
+🟨 Phase 1 — Joueur vivant (Jour 2 — 09/06)
+Objectif : le joueur bouge et tombe.
+
+joueur.c — gravité + vélocité verticale appliquée chaque tick
+joueur.c — déplacement gauche/droite au clavier
+niveau.c — sol hardcodé (une seule grande plateforme)
+joueur.c — collision avec le sol (le joueur ne tombe pas dans le vide)
+joueur.c — saut (impulsion vers le haut, une seule fois dans les airs)
+
+✅ Critère : le joueur marche et saute sur un sol plat.
+
+🟨 Phase 2 — Niveau jouable (Jour 3-4 — 10-11/06)
+Objectif : un vrai niveau avec obstacles.
+
+niveau.c — tableau de plateformes hardcodées (sol + plateformes en hauteur)
+joueur.c — collisions avec toutes les plateformes (haut, bas, côtés)
+niveau.c — précipices mortels (zones qui tuent le joueur)
+niveau.c — caméra/scrolling horizontal (la vue suit le joueur en X)
+rendu.c — affichage de toutes les plateformes
+
+✅ Critère : un niveau scrollable avec des plateformes à plusieurs hauteurs, le joueur meurt s'il tombe.
+
+🟧 Phase 3 — Ennemis (Jour 4-5 — 11-12/06)
+Objectif : le niveau est dangereux.
+
+ennemi.c — ennemi qui se déplace latéralement, fait demi-tour au bord
+ennemi.c — collision ennemi/joueur → le joueur perd une vie
+ennemi.c — détection joueur proche → l'ennemi "charge"
+joueur.c — saut sur ennemi → l'ennemi meurt
+rendu.c — orientation du sprite joueur + ennemi selon direction
+
+✅ Critère : des ennemis patrouillent, on peut les tuer en sautant dessus.
+
+🟧 Phase 4 — Objets & game logic (Jour 5-6 — 12-13/06)
+Objectif : le jeu a un but.
+
+objets.c — pièces placées dans le niveau, disparaissent au contact
+objets.c — compteur de pièces → bonus au seuil (ex : +1 vie à 10 pièces)
+objets.c — condition de victoire (ex : atteindre la sortie du niveau)
+objets.c — états du jeu : menu → jeu → game over / victoire
+rendu.c — écrans menu, game over, victoire
+
+✅ Critère : on peut gagner ou perdre, le jeu a un début et une fin.
+
+🟥 Phase 5 — Sprites BMP (Jour 6-7 — 13-14/06)
+Objectif : le jeu ressemble à quelque chose.
+
+rendu.c — chargement des BMP avec lisBMPRGB() au démarrage
+rendu.c — remplacement de tous les rectangles par les vrais sprites
+rendu.c — HUD complet : vies, timer, pièces, nom du niveau
+rendu.c — sprite miroir selon direction (flip horizontal)
+
+✅ Critère : le jeu est visuellement identifiable comme un platformer médiéval.
+
+🟩 Phase 6 — Polish & bonus (Jour 8-9 — 15-17/06)
+Objectif : se démarquer à la soutenance.
+
+Inertie — le joueur glisse légèrement au lieu de s'arrêter net
+Invulnérabilité — frames d'invulnérabilité + clignotement après dégâts
+Jump pad — zone qui propulse le joueur très haut
+Second niveau — copier/adapter la structure du niveau 1
+Parallaxe — arrière-plan qui défile moins vite que le niveau
+
+✅ Critère : le jeu est fun à jouer et impressionne visuellement.
+
+🏁 Phase 7 — Rendu final (Jour 10 — 18/06)
+Objectif : zéro stress à 23h00.
+
+make clean → make → vérifier que ça compile from scratch
+Vérifier que l'exécutable et les .o ne sont pas dans l'archive
+Archive nommée correctement avec le numéro de groupe
+Mail aux deux profs avant 23h00
 - florian.sananes@yncrea.fr
