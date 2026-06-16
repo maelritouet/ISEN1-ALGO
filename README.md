@@ -175,8 +175,6 @@ make clean  # Nettoie les fichiers objets
 ```
 
 > ⚠️ Le projet compile sous **Linux uniquement** avec `make`.  
-> Ne pas inclure les `.o` et l'exécutable dans l'archive de rendu.
-
 ---
 
 ## 📅 Historique du Développement
