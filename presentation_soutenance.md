@@ -1,37 +1,5 @@
-# 🎤 Soutenance — Medieval Fantasy Platformer
-> CIN1/BIOST1 — Semestre 2, 2026 — ISEN Méditerranée  
-> **Durée cible : 4 min 00 – 4 min 30**
-
----
-
-## Équipe
-
-| Membre | Rôle | Fichiers clés |
-|---|---|---|
-| Paul Gomez | Objets & Score | `objets.c` |
-| Luna Tardiveau | Menus & Sauvegarde | `menu.c`, I/O dans `main.c` |
-| Aurélie Chodron de Courcel | Comportement Ennemis | `ennemi.c` |
-| Mathieu Cortes | Génération de Niveaux | `blueprint.h`, `niveau.c` |
-| Mael Ritouet | Moteur Physique & Rendu | `joueur.c`, `rendu.c`, `jeu.h`, `main.c` |
-
----
-
-## Structure de la présentation
-
-| Partie | Qui parle | Durée |
-|---|---|---|
-| 1. Intro & démo du jeu | Mael | ~40 s |
-| 2. Paul — Objets & Score | Paul | ~25 s |
-| 3. Luna — Menus & Sauvegarde | Luna | ~25 s |
-| 4. Aurélie — Ennemis | Aurélie | ~25 s |
-| 5. Mathieu — Niveaux | Mathieu | ~25 s |
-| 6. Mael — Moteur, Rendu & Problèmes | Mael | ~1 min 30 |
-| **TOTAL** | | **~4 min 10** |
-
----
-
 ## PARTIE 1 — Présentation du jeu (~40 secondes)
-**🎤 Luna**
+**🎤 Paul**
 
 ### Slide 1 — Titre
 
@@ -39,16 +7,16 @@
 > « Bonjour, on est le groupe [X]. On a développé **Medieval Fantasy**, un jeu de plateformes en C avec la bibliothèque GfxLib.  
 > Le joueur incarne un chevalier qui traverse 9 niveaux dans un univers médiéval — des plaines au lever du soleil jusqu'aux donjons souterrains. »
 
-### Slide 2 — Screenshots du jeu (3-4 captures)
+### Slide 2 — Aurélie Screenshots du jeu (3-4 captures)
 > Contenu slide : menu principal, gameplay extérieur, donjon, écran de victoire
 
 **À dire :**
 > « Voici le menu, la sélection de niveau avec les records, un niveau extérieur avec parallaxe, et un donjon avec pièges et ennemis.  
 > On a implémenté toutes les fonctionnalités demandées dans le sujet et plusieurs bonus. Le projet est découpé en 7 modules — on va vous présenter qui a fait quoi. »
 
-**→ Passer la parole à Paul**
+### Slide 3 Luna — Architecture & Fonctionnalités   
+**À dire :**
 
----
 
 ## PARTIE 2 — Contributions individuelles (~25 s chacun)
 
@@ -110,16 +78,9 @@
 **À dire :**
 > « De mon côté, j'ai conçu les **structures de données** du jeu — la structure `JeuEtat` qui centralise tout l'état — et le **moteur physique** dans `joueur.c` : gravité, collisions AABB avec toutes les plateformes, et les mécaniques avancées comme le **coyote time**, le **jump buffer**, le **double saut** et le **dash**.  
 > J'ai aussi développé tout le module de **rendu** : chargement des BMP, système d'animation multi-frames, affichage des plateformes en 3 parties, parallaxe multicouche, et le HUD.
-> Enfin, j'ai écrit la boucle événementielle dans `main.c` et la gestion du plein écran. »
 
-### Slide — Bonus réalisés (~15 s)
 
-> Contenu slide : checklist visuelle
-
-**À dire :**
-> « En bonus, on a implémenté : la physique avancée avec inertie, le double saut et le dash, 9 niveaux avec verticalité et progression de difficulté, la parallaxe de fond, les animations fluides, le clignotement d'invulnérabilité, les records sauvegardés, et les effets sonores. »
-
-### Slide — Problème 1 : Lecture continue des touches (~20 s)
+### Slide — Mael - Problème 1 : Lecture continue des touches (~20 s)
 
 > Contenu slide : "GfxLib = événements ponctuels" → "XQueryKeymap = état continu"
 
@@ -127,14 +88,14 @@
 > « Premier problème majeur : **GfxLib ne signale les touches qu'à l'appui**, pas tant qu'elles sont maintenues. Pour un platformer, c'est bloquant — on a besoin de savoir en continu si la flèche droite est enfoncée.  
 > On a contourné ça en utilisant directement **XQueryKeymap**, une fonction de la bibliothèque X11, qui retourne l'état complet du clavier à chaque frame. »
 
-### Slide — Problème 2 : Transparence des sprites (~20 s)
+### Slide - Mathieu Problème 2 : Transparence des sprites (~20 s)
 
 > Contenu slide : "BMP 24 bits = pas d'alpha" → "conversion ARVB + magenta = transparence"
 
 **À dire :**
 > « Deuxième problème : GfxLib ne gère que les BMP 24 bits, **sans canal alpha**. On a écrit notre propre fonction de chargement qui convertit chaque pixel en format ARVB 32 bits. Tous les pixels de couleur **magenta pur** (255, 0, 255) reçoivent un alpha à zéro, ce qui les rend transparents. »
 
-### Slide finale — Conclusion (~10 s)
+### Slide finale Mael — Conclusion (~10 s)
 
 > Contenu slide : 2-3 pistes d'évolution (boss, power-ups, éditeur de niveaux)
 
@@ -143,28 +104,7 @@
 
 ---
 
-> **Si vous êtes en avance** : développez un peu la partie bonus ou ajoutez le problème du level design (blueprints) comme 3e problème.  
-> **Si vous êtes en retard** : coupez le problème 2 (transparence) et passez directement à la conclusion.
-
 ---
 
 
 
-
-
-### Ce que tout le monde doit savoir expliquer :
-
-1. **La boucle de jeu** : `Temporisation` → update joueur/ennemis/objets → `rafraichisFenetre()` → `Affichage` → `dessinerTout()`
-2. **La structure `JeuEtat`** : elle centralise tout l'état (joueur, plateformes, ennemis, objets, caméra, état du jeu)
-3. **Le système de blueprints** : une grille ASCII où chaque caractère = un type de bloc/ennemi/objet
-4. **Le fondu enchaîné** : `opacite_fondu` + `sens_fondu` pour les transitions entre écrans
-
-### Questions probables par personne :
-
-| Membre | Questions probables |
-|---|---|
-| **Paul** | Comment fonctionne `estEnContact` ? Comment le bonus vie est déclenché ? Pourquoi `initialiserJeu` appelle `initialiserNiveau` avant `initialiserJoueur` ? |
-| **Luna** | Comment fonctionne la navigation au clavier dans le menu ? Comment les records sont lus/écrits ? Quel format a `records.txt` ? |
-| **Aurélie** | Comment l'ennemi détecte le joueur ? Comment fonctionne `aSolDevant` ? Pourquoi 3 types d'ennemis avec des paramètres différents ? |
-| **Mathieu** | Comment le parseur gère la fusion des blocs identiques (runs) ? Comment fonctionne la caméra (dead-zone Y) ? Que fait `getPlatformHitbox` ? |
-| **Mael** | Expliquer le coyote time / jump buffer. Comment fonctionne la transparence ARVB ? Pourquoi XQueryKeymap au lieu de GfxLib ? Comment fonctionne le système d'animation ? |
